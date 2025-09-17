@@ -24,15 +24,13 @@ The project was designed using **ASP.NET Core MVC**, **C#**, and **SQL Database*
 ## 🛠️ Technologies Used  
 - **Frontend**: ASP.NET Core MVC, Razor Pages (`.cshtml`), CSS  
 - **Backend**: C#  
-- **Database**: SQL Server / Azure SQL  
-- **Tools**: Jira (for project planning), diagrams.net (for UML diagrams), GitHub (version control)  
+- **Tools**: Jira (for project planning), draw.io (for UML diagrams), GitHub (version control)  
 
 ---
 
 ## 📊 Project Planning  
 - Gantt Chart and planning created in **Jira**  
-- UML diagrams designed in **diagrams.net**  
-- AI support (ChatGPT-5) used for **planning guidance, UI skeletons, and static prototype examples**  
+- UML diagrams designed in **draw.io**  
 
 
 ---

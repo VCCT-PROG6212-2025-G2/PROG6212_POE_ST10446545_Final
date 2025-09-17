@@ -35,6 +35,6 @@ The project was designed using **ASP.NET Core MVC**, **C#**, and **SQL Database*
 
 ---
 
-## 👨‍💻 Authors  
+## Student  
 - **ST10446545** 
 

@@ -1,0 +1,37 @@
+﻿@{
+    ViewData["Title"] = "Approvals";
+}
+<div class="container py-4">
+    <h2 class="mb-4">Pending Claims</h2>
+
+    <div class="card shadow-sm">
+        <div class="card-body">
+            <table class="table align-middle">
+                <thead>
+                    <tr><th>Claim #</th><th>Lecturer</th><th>Hours</th><th>Amount</th><th>Status</th><th>Actions</th></tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>#1001</td>
+                        <td>—</td>
+                        <td>—</td>
+                        <td>—</td>
+                        <td><span class="badge-status badge-pending">Pending</span></td>
+                        <td class="d-flex gap-2">
+                            <button class="btn btn-success btn-sm" disabled>Approve</button>
+                            <button class="btn btn-danger btn-sm" disabled>Reject</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>#1000</td>
+                        <td>—</td>
+                        <td>—</td>
+                        <td>—</td>
+                        <td><span class="badge-status badge-approved">Approved</span></td>
+                        <td><button class="btn btn-outline-secondary btn-sm" disabled>View</button></td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

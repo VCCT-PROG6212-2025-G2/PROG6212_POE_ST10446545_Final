@@ -79,7 +79,6 @@ This version extends the functionality developed in **Part 1** by implementing *
 
 ### 3. Functionality
 - Implemented new claim submission features allowing users to upload supporting documents.
-- Integrated **Azure Blob Storage** for secure file storage and retrieval.
 - Improved the claim approval workflow to ensure data validation and better user feedback.
 - Added dynamic form validation to enhance the user experience when submitting claims.
 - Enhanced the admin dashboard to display claim details with document links and statuses.

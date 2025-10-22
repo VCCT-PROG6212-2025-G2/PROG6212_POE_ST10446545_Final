@@ -1,25 +1,24 @@
-﻿@{
+﻿@model dynamic
+@{
     ViewData["Title"] = "Profile";
 }
 <div class="container py-4">
-    <h2 class="mb-4">Profile</h2>
+    <h2>Profile</h2>
 
-    <div class="row g-3">
-        <div class="col-md-6">
-            <label class="form-label">Full Name</label>
-            <input class="form-control" placeholder="—" disabled />
-        </div>
-        <div class="col-md-6">
-            <label class="form-label">Email</label>
-            <input class="form-control" placeholder="—" disabled />
-        </div>
-        <div class="col-md-6">
-            <label class="form-label">Department</label>
-            <input class="form-control" placeholder="—" disabled />
-        </div>
-    </div>
+    <div class="card mt-3 shadow-sm">
+        <div class="card-body">
+            <dl class="row">
+                <dt class="col-sm-3">Full name</dt>
+                <dd class="col-sm-9">@Model.FullName</dd>
 
-    <div class="mt-4">
-        <button class="btn btn-primary" disabled>Save Changes (Prototype)</button>
+                <dt class="col-sm-3">Email</dt>
+                <dd class="col-sm-9">@Model.Email</dd>
+
+                <dt class="col-sm-3">Department</dt>
+                <dd class="col-sm-9">@Model.Department</dd>
+            </dl>
+
+            <p class="text-muted mb-0">This is a read-only placeholder for Part 2. Identity/roles will be added in Part 3.</p>
+        </div>
     </div>
 </div>

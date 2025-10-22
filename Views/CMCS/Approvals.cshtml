@@ -1,37 +1,82 @@
-﻿@{
+﻿@using CMCSProject.Models
+@model IEnumerable<Claim>
+@{
     ViewData["Title"] = "Approvals";
 }
 <div class="container py-4">
-    <h2 class="mb-4">Pending Claims</h2>
-
-    <div class="card shadow-sm">
-        <div class="card-body">
-            <table class="table align-middle">
-                <thead>
-                    <tr><th>Claim #</th><th>Lecturer</th><th>Hours</th><th>Amount</th><th>Status</th><th>Actions</th></tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>#1001</td>
-                        <td>—</td>
-                        <td>—</td>
-                        <td>—</td>
-                        <td><span class="badge-status badge-pending">Pending</span></td>
-                        <td class="d-flex gap-2">
-                            <button class="btn btn-success btn-sm" disabled>Approve</button>
-                            <button class="btn btn-danger btn-sm" disabled>Reject</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>#1000</td>
-                        <td>—</td>
-                        <td>—</td>
-                        <td>—</td>
-                        <td><span class="badge-status badge-approved">Approved</span></td>
-                        <td><button class="btn btn-outline-secondary btn-sm" disabled>View</button></td>
-                    </tr>
-                </tbody>
-            </table>
-        </div>
-    </div>
+    <h2>Approvals</h2>
+    <table class="table align-middle mt-3">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Lecturer</th>
+                <th>Hours</th>
+                <th>Rate</th>
+                <th>Total</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var c in Model)
+            {
+                <tr>
+                    <td>@c.ClaimId</td>
+                    <td>@c.LecturerName</td>
+                    <td>@c.HoursWorked</td>
+                    <td>@c.HourlyRate</td>
+                    <td>R @($"{c.HoursWorked * c.HourlyRate:0.00}")</td>
+                    <td>@c.ClaimDate.ToShortDateString()</td>
+                    <td>
+                        @{
+                            var badgeClass = c.Status switch
+                            {
+                                ClaimStatus.Pending => "badge-pending",
+                                ClaimStatus.Verified => "badge-approved", 
+                                ClaimStatus.Approved => "badge-approved",
+                                ClaimStatus.Rejected => "badge-rejected",
+                                _ => "badge-status"
+                            };
+                        }
+                        <span class="badge-status @badgeClass">@c.Status</span>
+                    </td>
+                    <td class="d-flex gap-1">
+                        @if (c.Status == ClaimStatus.Pending)
+                        {
+                            <form asp-action="Verify" method="post">
+                                <input type="hidden" name="id" value="@c.ClaimId" />
+                                <input type="hidden" name="approverName" value="Coordinator Demo" />
+                                <button class="btn btn-success btn-sm">Verify</button>
+                            </form>
+                            <form asp-action="Reject" method="post">
+                                <input type="hidden" name="id" value="@c.ClaimId" />
+                                <input type="hidden" name="approverName" value="Coordinator Demo" />
+                                <input type="hidden" name="role" value="@ApproverRole.Coordinator" />
+                                <button class="btn btn-danger btn-sm">Reject</button>
+                            </form>
+                        }
+                        else if (c.Status == ClaimStatus.Verified)
+                        {
+                            <form asp-action="Approve" method="post">
+                                <input type="hidden" name="id" value="@c.ClaimId" />
+                                <input type="hidden" name="approverName" value="Manager Demo" />
+                                <button class="btn btn-success btn-sm">Approve</button>
+                            </form>
+                            <form asp-action="Reject" method="post">
+                                <input type="hidden" name="id" value="@c.ClaimId" />
+                                <input type="hidden" name="approverName" value="Manager Demo" />
+                                <input type="hidden" name="role" value="@ApproverRole.Manager" />
+                                <button class="btn btn-danger btn-sm">Reject</button>
+                            </form>
+                        }
+                        else
+                        {
+                            <span class="text-muted">No actions</span>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
 </div>

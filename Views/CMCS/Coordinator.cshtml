@@ -1,0 +1,68 @@
+﻿@using CMCSProject.Models
+@model IEnumerable<Claim>
+@{
+    ViewData["Title"] = "Coordinator";
+}
+
+<div class="container py-4">
+    <h2>Coordinator – Pending Claims</h2>
+
+    <table class="table align-middle mt-3">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Lecturer</th>
+                <th>Hours</th>
+                <th>Rate</th>
+                <th>Total</th>
+                <th>Date</th>
+                <th>Status</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var c in Model)
+            {
+                var badgeClass = c.Status switch
+                {
+                    ClaimStatus.Pending => "badge-pending",
+                    ClaimStatus.Verified => "badge-approved",
+                    ClaimStatus.Approved => "badge-approved",
+                    ClaimStatus.Rejected => "badge-rejected",
+                    _ => "badge-status"
+                };
+                <tr>
+                    <td>@c.ClaimId</td>
+                    <td>@c.LecturerName</td>
+                    <td>@c.HoursWorked</td>
+                    <td>@c.HourlyRate</td>
+                    <td>R @($"{(c.HoursWorked * c.HourlyRate):0.00}")</td>
+                    <td>@c.ClaimDate.ToShortDateString()</td>
+                    <td><span class="badge-status @badgeClass">@c.Status</span></td>
+                    <td>
+                        @* Coordinator can only act on Pending *@
+                        @if (c.Status == ClaimStatus.Pending)
+                        {
+                            <form asp-action="Verify" method="post" class="d-inline">
+                                <input type="hidden" name="id" value="@c.ClaimId" />
+                                <input type="hidden" name="approverName" value="Coordinator Demo" />
+                                <input type="hidden" name="role" value="ApproverRole.Coordinator" />
+                                <button class="btn btn-success btn-sm">Verify</button>
+                            </form>
+                            <form asp-action="Reject" method="post" class="d-inline">
+                                <input type="hidden" name="id" value="@c.ClaimId" />
+                                <input type="hidden" name="approverName" value="Coordinator Demo" />
+                                <input type="hidden" name="role" value="ApproverRole.Coordinator" />
+                                <button class="btn btn-danger btn-sm">Reject</button>
+                            </form>
+                        }
+                        else
+                        {
+                            <span class="text-muted">No actions</span>
+                        }
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

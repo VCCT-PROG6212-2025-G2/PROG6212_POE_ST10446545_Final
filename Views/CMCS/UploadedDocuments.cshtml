@@ -1,18 +1,21 @@
-﻿@{
+﻿@model IEnumerable<CMCSProject.Models.SupportingDocument>
+@{
     ViewData["Title"] = "Documents";
 }
 <div class="container py-4">
-    <h2 class="mb-4">Uploaded Documents</h2>
-    <div class="card shadow-sm">
-        <div class="card-body">
-            <table class="table align-middle">
-                <thead><tr><th>File Name</th><th>Type</th><th>Uploaded</th><th>Linked Claim</th></tr></thead>
-                <tbody>
-                    <tr><td>—</td><td>.pdf</td><td>—</td><td>#—</td></tr>
-                    <tr><td>—</td><td>.docx</td><td>—</td><td>#—</td></tr>
-                </tbody>
-            </table>
-            <button class="btn btn-primary" disabled>Upload New (Prototype)</button>
-        </div>
-    </div>
+    <h2>Uploaded Documents</h2>
+    <table class="table mt-3">
+        <thead><tr><th>File</th><th>Type</th><th>Date</th><th>Claim #</th></tr></thead>
+        <tbody>
+            @foreach (var d in Model)
+            {
+                <tr>
+                    <td><a href="@d.FilePath" target="_blank">@d.FileName</a></td>
+                    <td>@d.ContentType</td>
+                    <td>@d.UploadDate.ToLocalTime()</td>
+                    <td>@d.ClaimId</td>
+                </tr>
+            }
+        </tbody>
+    </table>
 </div>

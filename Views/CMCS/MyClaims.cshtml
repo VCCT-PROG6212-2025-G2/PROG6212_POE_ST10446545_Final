@@ -1,0 +1,43 @@
+﻿@model IEnumerable<CMCSProject.Models.Claim>
+@{
+    ViewData["Title"] = "My Claims";
+    var lecturer = (string)ViewBag.Lecturer ?? "Unknown";
+}
+<div class="container py-4">
+    <h2>My Claims <small class="text-muted">(@lecturer)</small></h2>
+
+    <form class="row g-2 mb-3" method="get">
+        <div class="col-auto">
+            <input class="form-control" name="lecturer" placeholder="Lecturer name" value="@lecturer" />
+        </div>
+        <div class="col-auto">
+            <button class="btn btn-primary">Filter</button>
+        </div>
+    </form>
+
+    <table class="table align-middle">
+        <thead>
+            <tr><th>Date</th><th>Hours</th><th>Amount</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+            @foreach (var c in Model)
+            {
+                var amount = c.HoursWorked * c.HourlyRate;
+                var badge = c.Status switch
+                {
+                    CMCSProject.Models.ClaimStatus.Pending => "badge-pending",
+                    CMCSProject.Models.ClaimStatus.Verified => "badge-approved",
+                    CMCSProject.Models.ClaimStatus.Approved => "badge-approved",
+                    CMCSProject.Models.ClaimStatus.Rejected => "badge-rejected",
+                    _ => "badge-status"
+                };
+                <tr>
+                    <td>@c.ClaimDate.ToShortDateString()</td>
+                    <td>@c.HoursWorked</td>
+                    <td>R @($"{amount:0.00}")</td>
+                    <td><span class="badge-status @badge">@c.Status</span></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

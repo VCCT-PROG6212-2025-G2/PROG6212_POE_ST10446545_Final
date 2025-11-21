@@ -1,138 +1,160 @@
-# CMCS Claim Management System 
+# CMCS Claim Management System  
 
-##  Project Overview  
-This project is a **Claim Management System** developed as part of the CMCS PROG6212 coursework. The system allows:  
-- **Lecturers** to submit claims  
-- **Coordinators** and **Managers** to review and approve/reject claims  
-- **Support for document uploads**  
-- **Tracking claim statuses** through a dashboard  
+## 📌 Project Overview  
+The **CMCS – Claim Management and Coordination System** is a web-based system built for university lecturers to submit monthly work-hour claims, while coordinators, managers, and HR review and manage these claims.
 
-The project was designed using **ASP.NET Core MVC**, **C#**, and **SQL Database** integration.  
+The system provides:  
+- ✔️ Lecturer claim submissions  
+- ✔️ Coordinator verification workflow  
+- ✔️ Manager approval workflow  
+- ✔️ HR claim summary reporting  
+- ✔️ Automated rule-checking (Hours > 160, Rate > R1000)  
+- ✔️ File uploads stored in Azure Blob Storage  
+- ✔️ Dashboard tracking of claim statuses  
 
----
-
-##  Features  
-- Lecturer claim submission form  
-- Approval workflows for Coordinator and Manager  
-- Uploading and storing supporting documents  
-- Dashboard to view claim statuses (Pending, Approved, Rejected)  
-- GUI prototype designed with `.cshtml` pages  
-- Gantt Chart & project plan created using **Jira**  
+Built using **ASP.NET Core MVC (.NET 8), Entity Framework Core, Azure SQL, Azure Blob Storage, Bootstrap 5**.
 
 ---
 
-##  Technologies Used  
-- **Frontend**: ASP.NET Core MVC, Razor Pages (`.cshtml`), CSS  
-- **Backend**: C#  
-- **Tools**: Jira (for project planning), draw.io (for UML diagrams), GitHub (version control)  
+# 🧩 System Components  
 
----
-
-##  Project Planning  
-- Gantt Chart and planning created in **Jira**  
-- UML diagrams designed in **draw.io**  
-
-
----
-
-
-#  CMCS Project – Part 2 (Enhanced Functionality & Unit Tests)
-
-##  Overview
-The **Claim Management and Coordination System (CMCS)** allows university lecturers to submit monthly claims for hours worked, and enables coordinators and managers to review, verify, and approve those claims.  
-This version extends the functionality developed in **Part 1** by implementing **validation, error handling, file upload management, and unit testing** based on lecturer feedback.
-
----
-
-##  System Components
 | Role | Responsibilities |
 |------|------------------|
-| **Lecturer** | Submit claims, upload supporting documents |
-| **Coordinator** | Verify or reject pending claims |
+| **Lecturer** | Submit claims, upload supporting documents, track own claims |
+| **Coordinator** | Verify or reject pending claims, rule-check violations |
 | **Manager** | Approve or reject verified claims |
-| **System** | Tracks status (Pending → Verified → Approved/Rejected), displays summaries on the dashboard |
+| **HR** | Generate summary reports of approved claims |
+| **System** | Tracks statuses, enforces rules, displays dashboards |
 
 ---
 
-## ⚙️ Technologies Used
-- ASP.NET Core MVC (.NET 8)
-- Entity Framework Core
-- Azure SQL Database
-- Azure Blob Storage
-- xUnit Test Framework
-- Bootstrap 5 (for responsive UI)
+# ⚙️ Technologies Used  
+- ASP.NET Core MVC (.NET 8)  
+- Entity Framework Core  
+- Azure SQL Database  
+- Azure Blob Storage  
+- xUnit Test Framework  
+- Bootstrap 5  
+- Razor Pages (`.cshtml`)  
 
 ---
 
-##  Features Added in Part 2
+# 🚀 Features (Part 1 + Part 2 + Final POE Enhancements)
 
-###  1. Input Validation (Lecturer Feedback)
-- Implemented `DataAnnotations` in models (e.g. `[Required]`, `[Range]`, `[StringLength]`).
-- Added validation messages on claim submission forms.
-- Invalid submissions now redisplay the form with highlighted errors.
-
-###  2. File Upload Restrictions
-- Only `.pdf`, `.docx`, and `.xlsx` files are allowed.
-- Max file size: **5 MB per file**.
-- Invalid or oversized uploads trigger friendly validation messages.
-- Files continue to be stored in **Azure Blob Storage** and linked to each claim.
-
-### 3. Functionality
-- Implemented new claim submission features allowing users to upload supporting documents.
-- Improved the claim approval workflow to ensure data validation and better user feedback.
-- Added dynamic form validation to enhance the user experience when submitting claims.
-- Enhanced the admin dashboard to display claim details with document links and statuses.
-
-###  4. Error Handling & Feedback
-- Configured a global error handler with a user-friendly fallback page (`/Home/Error`).
-- All pages display success/error notifications using Bootstrap alerts and `TempData`.
-
-###  5. Unit Testing Implementation
-Created a dedicated **xUnit Test Project (`CMCSProject.Tests`)** to ensure reliability:
-- ✅ `Verify_PendingClaim_ChangesStatusToVerified_AndAddsApproval`
-- ✅ `Approve_VerifiedClaim_ChangesStatusToApproved`
-- ✅ `Reject_FromPending_SetsStatusToRejected`
-- ✅ `Reject_FromVerified_SetsStatusToRejected`
-- ✅ All tests now pass successfully (`4 Passed, 0 Failed`).
-
-###  6. Improvements from Lecturer Feedback
-- Better naming conventions for models and view models.
-- Controller logic refactored for clarity and testability.
-- User feedback on every action (submission, verification, approval, rejection).
-- Enhanced dashboard summaries reflecting updated claim statuses.
+## 1️⃣ Claim Submission (Lecturer)
+- Auto-calculated total amount *(Hours × Rate)*  
+- Real-time validation using DataAnnotations  
+- Upload supporting documents (`.pdf`, `.docx`, `.xlsx`)  
+- Max file size: **5 MB**  
+- Errors displayed inline with highlighted fields  
+- Claim stored with linked document(s)
 
 ---
 
-##  Running the Tests
-all unit tests where successful 
-
-✅ You should see:
-```
-Test run finished: 4 Passed, 0 Failed
-```
+## 2️⃣ File Upload Management  
+- Only approved file types allowed  
+- Oversized/invalid files show friendly errors  
+- Files stored in **Azure Blob Storage**  
+- Each file linked to its associated claim  
 
 ---
 
-##  Navigation Overview
+## 3️⃣ Coordinator Automation (NEW – Final POE)  
+- Sees only **Pending** claims  
+- System performs automatic rule checking:
+  - Hours > **160**  
+  - Hourly Rate > **R1000**  
+- Displays:
+  - 🟩 **OK** badge when valid  
+  - 🟥 **Violation** badge when rules fail  
+- Available actions: **Verify** or **Reject**
+
+---
+
+## 4️⃣ Manager Automation (NEW – Final POE)  
+- Sees only **Verified** claims  
+- Same automatic rule evaluation displayed  
+- Available actions: **Approve** or **Reject**
+
+---
+
+## 5️⃣ HR Summary Reporting (NEW – Final POE)  
+- Shows:
+  - Number of approved claims per lecturer  
+  - Total hours  
+  - Total amount  
+- Date-range filtering  
+- “**Print Report**” option for PDF-style printing  
+
+---
+
+## 6️⃣ My Claims (Lecturer View)  
+- Lecturer can filter and view their own claim history  
+- Status, hours, and amount shown  
+- Helps lecturers track progress of submitted claims  
+
+---
+
+## 7️⃣ Dashboard Enhancements  
+- Displays:
+  - Monthly total amount  
+  - List of recent claims  
+  - Status badges (Pending, Verified, Approved, Rejected)  
+- Acts as an overview for all activity  
+
+---
+
+## 8️⃣ Error Handling & User Feedback  
+- Global error handler with fallback `/Home/Error`  
+- Success and error alerts via Bootstrap + TempData  
+- Clear user feedback on every action (submit → verify → approve)  
+
+---
+
+# 🧪 Unit Testing (xUnit)  
+Dedicated **CMCSProject.Tests** project includes:
+
+- ✔️ `Verify_PendingClaim_ChangesStatusToVerified_AndAddsApproval`  
+- ✔️ `Approve_VerifiedClaim_ChangesStatusToApproved`  
+- ✔️ `Reject_FromPending_SetsStatusToRejected`  
+- ✔️ `Reject_FromVerified_SetsStatusToRejected`  
+
+All tests: **PASSED (4/4)** 
+
+---
+
+# 🧭 Navigation Overview  
+
 | Page | Description |
-|------|--------------|
+|------|-------------|
 | `/Home/Index` | Landing page |
+| `/CMCS/Dashboard` | Dashboard with claim summary |
 | `/CMCS/SubmitClaim` | Lecturer claim submission |
-| `/CMCS/Coordinator` | Coordinator review dashboard |
-| `/CMCS/Manager` | Manager approval dashboard |
-| `/CMCS/Documents` | View uploaded files |
-| `/CMCS/Dashboard` | Summary view of all claim statuses |
+| `/CMCS/Documents` | Uploaded document list |
+| `/CMCS/Approvals` | Shows all claims |
+| `/CMCS/Coordinator` | Coordinator pending claims |
+| `/CMCS/Manager` | Manager verified claims |
+| `/CMCS/HR` | HR approved-claim summary |
+| `/CMCS/MyClaims` | Lecturer personal claim history |
+| `/CMCS/Profile` | Profile page |
 
 ---
 
-##  Version Summary
+# 📝 Version Summary  
 | Version | Description |
-|----------|-------------|
-| **Part 1** | Base system (Claim submission + workflow) |
-| **Part 2** | Added validation, error handling, file restrictions, and unit tests based on lecturer feedback |
+|---------|-------------|
+| **Part 1** | Base claim submission system + workflow |
+| **Part 2** | Validation, file restriction, error handling, unit tests |
+| **Part 3 (Final POE)** | Coordinator & Manager automation, HR reports, My Claims, improved UI, final workflow |
 
+---
 
-## Student  
-- **ST10446545** 
-## YoutubeLink
-https://youtu.be/ZZE5zHwZhOI 
+# 👤 Student Details  
+**Name:** ST10446545  
+**Module:** PROG6212  
+**POE:** CMCS Claim Management System  
+
+---
+
+# 🎥 YouTube Link  
+https://youtu.be/sA-Ps6q-45I

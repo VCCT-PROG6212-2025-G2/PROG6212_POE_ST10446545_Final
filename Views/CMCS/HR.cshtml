@@ -1,0 +1,51 @@
+﻿@model CMCSProject.ViewModels.HrReportVm
+@{
+    ViewData["Title"] = "HR – Claim Summary";
+}
+
+<div class="container py-4">
+    <h2>HR – Approved Claim Summary</h2>
+
+    <form method="get" class="row g-3 mt-3">
+        <div class="col-md-3">
+            <label asp-for="From" class="form-label">From date</label>
+            <input asp-for="From" class="form-control" />
+        </div>
+        <div class="col-md-3">
+            <label asp-for="To" class="form-label">To date</label>
+            <input asp-for="To" class="form-control" />
+        </div>
+        <div class="col-md-3 align-self-end">
+            <button class="btn btn-primary">Filter</button>
+            <button type="button" class="btn btn-outline-secondary" onclick="window.print()">Print Report</button>
+        </div>
+    </form>
+
+    <table class="table table-striped mt-4">
+        <thead>
+            <tr>
+                <th>Lecturer</th>
+                <th>Number of Claims</th>
+                <th>Total Hours</th>
+                <th>Total Amount (R)</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var row in Model.Rows)
+            {
+                <tr>
+                    <td>@row.LecturerName</td>
+                    <td>@row.ClaimCount</td>
+                    <td>@row.TotalHours</td>
+                    <td>@row.TotalAmount.ToString("0.00")</td>
+                </tr>
+            }
+        </tbody>
+        <tfoot>
+            <tr class="fw-bold">
+                <td colspan="3">Grand Total</td>
+                <td>@Model.GrandTotal.ToString("0.00")</td>
+            </tr>
+        </tfoot>
+    </table>
+</div>

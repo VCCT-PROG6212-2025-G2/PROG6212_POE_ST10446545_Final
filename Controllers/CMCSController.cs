@@ -1,5 +1,5 @@
 ﻿//*****************************************************************************
-//PROG6212_Part1_ST10446545_ST10446545@vcconnect.edu.za
+//PROG6212_POE_ST10446545_ST10446545@vcconnect.edu.za
 //*****************************************************************************
 using CMCSProject.Data;
 using CMCSProject.Models;
@@ -228,6 +228,44 @@ namespace CMCSProject.Controllers
             ViewBag.Lecturer = lecturer;
             return View(claims);
         }
+        public async Task<IActionResult> HR(DateTime? from, DateTime? to)
+        {
+            var query = _db.Claims
+                .Where(c => c.Status == ClaimStatus.Approved);
+
+            if (from.HasValue)
+                query = query.Where(c => c.ClaimDate >= from.Value);
+
+            if (to.HasValue)
+                query = query.Where(c => c.ClaimDate <= to.Value);
+
+            var claims = await query
+                .OrderBy(c => c.LecturerName)
+                .ThenBy(c => c.ClaimDate)
+                .ToListAsync();
+
+            var rows = claims
+                .GroupBy(c => c.LecturerName)
+                .Select(g => new HrReportRow
+                {
+                    LecturerName = g.Key,
+                    TotalHours = g.Sum(x => x.HoursWorked),
+                    TotalAmount = g.Sum(x => x.TotalAmount),
+                    ClaimCount = g.Count()
+                })
+                .ToList();
+
+            var vm = new HrReportVm
+            {
+                From = from,
+                To = to,
+                Rows = rows
+            };
+
+            return View(vm);
+        }
     }
 }
 //---------------------------------------------------------- End Of File -----------------------------------------------------------------
+
+//https://chatgpt.com/share/692075ea-0d4c-8008-814a-0fbc059967d2, error at Ln256, asked Chatgpt to help explain and correct the error.

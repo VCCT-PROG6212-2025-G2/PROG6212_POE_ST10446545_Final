@@ -1,7 +1,10 @@
 ﻿@using CMCSProject.Models
+@using System.Collections.Generic
 @model IEnumerable<Claim>
 @{
     ViewData["Title"] = "Manager";
+    decimal maxHours = 160;   
+    decimal maxRate = 1000;  
 }
 
 <div class="container py-4">
@@ -17,6 +20,7 @@
                 <th>Total</th>
                 <th>Date</th>
                 <th>Status</th>
+                <th>Rules check</th>  
                 <th>Actions</th>
             </tr>
         </thead>
@@ -31,16 +35,43 @@
                     ClaimStatus.Rejected => "badge-rejected",
                     _ => "badge-status"
                 };
+
                 <tr>
                     <td>@c.ClaimId</td>
                     <td>@c.LecturerName</td>
                     <td>@c.HoursWorked</td>
                     <td>@c.HourlyRate</td>
-                    <td>R @($"{(c.HoursWorked * c.HourlyRate):0.00}")</td>
+                    <td>@(c.HoursWorked* c.HourlyRate).ToString("0.00")</td>
                     <td>@c.ClaimDate.ToShortDateString()</td>
-                    <td><span class="badge-status @badgeClass">@c.Status</span></td>
+                    <td><span class="badge @badgeClass">@c.Status</span></td>
+
+                   
                     <td>
-                        @* Manager can only act on Verified *@
+                        @{
+                            var flags = new List<string>();
+
+                            if (c.HoursWorked > maxHours)
+                            {
+                                flags.Add($"Hours > {maxHours}");
+                            }
+
+                            if (c.HourlyRate > maxRate)
+                            {
+                                flags.Add("Rate too high");
+                            }
+                        }
+
+                        @if (flags.Any())
+                        {
+                            <span class="badge bg-danger">@string.Join(", ", flags)</span>
+                        }
+                        else
+                        {
+                            <span class="badge bg-success">OK</span>
+                        }
+                    </td>
+ 
+                    <td>
                         @if (c.Status == ClaimStatus.Verified)
                         {
                             <form asp-action="Approve" method="post" class="d-inline">
@@ -49,6 +80,7 @@
                                 <input type="hidden" name="role" value="ApproverRole.Manager" />
                                 <button class="btn btn-success btn-sm">Approve</button>
                             </form>
+
                             <form asp-action="Reject" method="post" class="d-inline">
                                 <input type="hidden" name="id" value="@c.ClaimId" />
                                 <input type="hidden" name="approverName" value="Manager Demo" />

@@ -23,6 +23,18 @@
                 <input asp-for="HourlyRate" class="form-control" />
                 <span asp-validation-for="HourlyRate" class="text-danger"></span>
             </div>
+
+            
+            <div class="col-md-3">
+                <label class="form-label">Total Amount (R)</label>
+                <input id="TotalAmount" class="form-control" readonly />
+                <small class="text-muted">Auto-calculated: Hours × Hourly Rate</small>
+            </div>
+
+
+
+
+
             <div class="col-md-3">
                 <label class="form-label">Claim Date</label>
                 <input asp-for="ClaimDate" class="form-control" />
@@ -48,4 +60,29 @@
 
 @section Scripts {
     <partial name="_ValidationScriptsPartial" />
+    <script>
+        function updateTotal() {
+            const hoursInput = document.getElementById("HoursWorked");
+            const rateInput = document.getElementById("HourlyRate");
+            const totalInput = document.getElementById("TotalAmount");
+
+            if (!hoursInput || !rateInput || !totalInput) return;
+
+            const hours = parseFloat(hoursInput.value) || 0;
+            const rate = parseFloat(rateInput.value) || 0;
+            const total = hours * rate;
+
+            totalInput.value = total.toFixed(2);
+        }
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const hoursInput = document.getElementById("HoursWorked");
+            const rateInput = document.getElementById("HourlyRate");
+
+            if (hoursInput) hoursInput.addEventListener("input", updateTotal);
+            if (rateInput) rateInput.addEventListener("input", updateTotal);
+
+            updateTotal();
+        });
+    </script>
 }
